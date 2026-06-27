@@ -44,7 +44,7 @@ ax1.grid(True)
 fig.text(
     0.5,                # x position (center)
     0.001,               # y position (bottom area, below plots)
-    ("1. Composing MSE with the sigmoid produces a loss function full of local minima, so gradient descent can get stuck and never find the globally optimal weights. \n"
+    ("1. Composing MSE with the sigmoid produces a wiggly loss function full of local minima, so gradient descent can get stuck and never find the globally optimal weights. \n"
      "2. MSE penalizes a 51% wrong prediction almost the same as a 99% wrong prediction, but a confidently wrong prediction should be punished far more harshly — log loss grows to infinity as confidence in the wrong answer grows.\n"
      "3. MSE is derived from the assumption that errors are Gaussian (continuous), but binary labels follow a Bernoulli distribution; log loss is the statistically correct loss derived directly from Maximum Likelihood Estimation for that distribution.\n"
      ),
