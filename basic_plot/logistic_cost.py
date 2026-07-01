@@ -24,9 +24,6 @@ def plt_logistic_cost(X,y):
     cost = cost.reshape(wx.shape)
 
     fig = plt.figure(figsize=(9,5))
-    fig.canvas.toolbar_visible = False
-    fig.canvas.header_visible = False
-    fig.canvas.footer_visible = False
     ax = fig.add_subplot(1, 2, 1, projection='3d')
     ax.plot_surface(wx, by, cost, alpha=0.6,cmap=cm.jet)
 
