@@ -10,13 +10,13 @@ def log_1pexp(x, maximum=20):
     out : (ndarray Shape matches x      output ~= np.log(1+exp(x))
     '''
 
-    out  = np.zeros_like(x,dtype=float)
-    i    = x <= maximum
-    ni   = np.logical_not(i)
+    output  = np.zeros_like(x,dtype=float)
+    i    = x <= maximum  # e.g. [True,True,True,False]
+    ni   = np.logical_not(i) # e.g. [False,False,False,True]
 
-    out[i]  = np.log(1 + np.exp(x[i]))
-    out[ni] = x[ni]
-    return out
+    output[i]  = np.log(1 + np.exp(x[i]))
+    output[ni] = x[ni]
+    return output
 
 def sigmoid(z):
     """
