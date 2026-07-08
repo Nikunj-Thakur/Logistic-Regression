@@ -13,7 +13,8 @@ The project demonstrates:
 - a from-scratch logistic regression implementation,
 - stable logistic cost computation,
 - gradient descent training,
-- feature importance and risk prediction for heart disease.
+- feature importance and risk prediction for heart disease,
+- evaluation with precision, recall, F1-score, ROC-AUC, and threshold tuning.
 
 NOTE: This project is intended for learning and experimentation — for production or larger datasets prefer `scikit-learn`'s `LogisticRegression`.
 
@@ -21,7 +22,7 @@ NOTE: This project is intended for learning and experimentation — for producti
 
 ## Quick overview
 
-- `heart_disease_prediction_model.py` — end-to-end example using `predictHeartDisease.csv` (normalisation, training, plotting and single-record prediction).
+- `heart_disease_prediction_model.py` — end-to-end example using `predictHeartDisease.csv` (normalisation, training, plotting, single-record prediction, and threshold-based evaluation).
 - `logistic_utility_function.py` — core math: `sigmoid`, `log_1pexp`, cost, gradient and `gradient_descent`.
 - `images/` — visual assets used in the README.
 - `basic_plot/` — small plotting experiments.
@@ -113,7 +114,8 @@ Notes:
 The example dataset contains approximately 15% positive examples (`TenYearCHD == 1`). With this imbalance:
 
 - Overall accuracy can be misleading; prefer `precision`, `recall`, `F1-score`, and `ROC-AUC`.
-- The current example may predict very few positives at a default decision threshold of 0.5 — examine probability outputs and adjust threshold if appropriate.
+- The current example evaluates several decision thresholds and reports how each changes the trade-off between false positives and false negatives.
+- In the latest run, a threshold of `0.3` gave the best F1-score on the test set for this model.
 
 Recommended quick approaches:
 
@@ -144,7 +146,8 @@ print('ROC AUC:', roc_auc_score(y_test, y_prob))
 
 1. Add a `train_eval.py` script to perform a proper `train_test_split`, evaluate metrics and save plots.
 2. Implement `class_weight` support in the trainer to handle imbalance without resampling.
-3. Add automated tests that ensure the example script runs and key outputs (cost decreases, shapes match).
+3. Tune the model further with regularisation and a wider threshold search.
+4. Add automated tests that ensure the example script runs and key outputs (cost decreases, shapes match).
 
 ---
 

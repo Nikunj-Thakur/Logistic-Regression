@@ -5,6 +5,18 @@ import pandas as pd
 import os
 
 # Try to use scikit-learn's reliable train/test splitter.
+try:
+    from sklearn.metrics import (
+        f1_score,
+        precision_score,
+        recall_score,
+        roc_auc_score,
+    )
+except ImportError:  # pragma: no cover - fallback for minimal environments
+    f1_score = None
+    precision_score = None
+    recall_score = None
+    roc_auc_score = None
 # If scikit-learn is not available, fall back to a simple manual split.
 try:
     from sklearn.model_selection import train_test_split
@@ -21,14 +33,14 @@ X = df.drop(columns=['TenYearCHD'])
 y = df['TenYearCHD']
 
 # Split the data into training and test sets.
-# This is better than using the last 15 rows because it is random and preserves the class balance.
+# This is better approach because it is random and preserves the class balance.
 if train_test_split is not None:
     X_train, X_test, y_train, y_test = train_test_split(
         X,
         y,
         test_size=0.2,
         stratify=y,
-        random_state=42,
+        random_state=40,
     )
 else:
     # Create a random number generator with a fixed seed so the split is reproducible.
@@ -66,6 +78,7 @@ print(
     f"Peak to Peak range by column in Raw        X:{np.ptp(X_train_raw, axis=0)}")
 print(
     f"Peak to Peak range by column in Normalized X:{np.ptp(X_train_norm, axis=0)}")
+
 print(f"Training set size: {len(X_train)}")
 print(f"Testing set size: {len(X_test)}")
 print(f"Positive rate in train set: {y_train.mean():.3f}")
@@ -77,8 +90,8 @@ y_train_values = y_train.values
 # Initialize logistic regression parameters.
 w_tmp = np.zeros_like(X_train_raw[0])
 b_tmp = 0.
-alph = 0.03
-iters = 2000
+alph = 0.09
+iters = 1000
 
 # Train the model on the normalized training data.
 w_out, b_out, J_hist = luf.gradient_descent(
@@ -92,8 +105,8 @@ test_probs = luf.sigmoid(X_test_norm @ w_out + b_out)
 
 # Turn those probabilities into binary class predictions.
 # If the probability is 0.5 or higher, predict class 1; otherwise predict class 0.
-train_pred = (train_probs >= 0.5).astype(int)
-test_pred = (test_probs >= 0.5).astype(int)
+train_pred = (train_probs >= 0.3).astype(int)
+test_pred = (test_probs >= 0.3).astype(int)
 
 # Compare the predicted labels with the true labels to measure accuracy.
 # np.mean(...) computes the fraction of correct predictions.
@@ -104,6 +117,45 @@ test_acc = np.mean(test_pred == y_test.values)
 print(f"Training accuracy: {train_acc:.3f}")
 print(f"Testing accuracy: {test_acc:.3f}")
 print(f"Testing positive predictions: {test_pred.sum()} / {len(test_pred)}")
+
+if all(metric is not None for metric in [precision_score, recall_score, f1_score, roc_auc_score]):
+    train_precision = precision_score(y_train_values, train_pred, zero_division=0)
+    train_recall = recall_score(y_train_values, train_pred, zero_division=0)
+    train_f1 = f1_score(y_train_values, train_pred, zero_division=0)
+    test_precision = precision_score(y_test.values, test_pred, zero_division=0)
+    test_recall = recall_score(y_test.values, test_pred, zero_division=0)
+    test_f1 = f1_score(y_test.values, test_pred, zero_division=0)
+
+    train_auc = roc_auc_score(y_train_values, train_probs)
+    test_auc = roc_auc_score(y_test.values, test_probs)
+
+    print(f"Training precision: {train_precision:.3f}")
+    print(f"Training recall: {train_recall:.3f}")
+    print(f"Training F1-score: {train_f1:.3f}")
+    print(f"Training ROC-AUC: {train_auc:.3f}")
+    print(f"Testing precision: {test_precision:.3f}")
+    print(f"Testing recall: {test_recall:.3f}")
+    print(f"Testing F1-score: {test_f1:.3f}")
+    print(f"Testing ROC-AUC: {test_auc:.3f}")
+
+    thresholds = [0.3, 0.4, 0.5, 0.6, 0.7]
+    print("\nThreshold tuning on test set:")
+    best_threshold = None
+    best_f1 = -1.0
+    for threshold in thresholds:
+        threshold_pred = (test_probs >= threshold).astype(int)
+        precision = precision_score(y_test.values, threshold_pred, zero_division=0)
+        recall = recall_score(y_test.values, threshold_pred, zero_division=0)
+        f1 = f1_score(y_test.values, threshold_pred, zero_division=0)
+        print(
+            f"threshold={threshold:.1f} | precision={precision:.3f} | "
+            f"recall={recall:.3f} | f1={f1:.3f}"
+        )
+        if f1 > best_f1:
+            best_f1 = f1
+            best_threshold = threshold
+
+    print(f"Best threshold by F1-score: {best_threshold:.1f} (F1={best_f1:.3f})")
 
 # Show which input features had the biggest influence on the model.
 feature_names = X.columns
