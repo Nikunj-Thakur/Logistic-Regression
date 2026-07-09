@@ -244,6 +244,48 @@ Then:
 
 So, the model has an accuracy of 95%, precision of 83.3%, recall of 76.9%, and an F1-score of 80%.
 
+## ROC-AUC
+
+ROC-AUC stands for Receiver Operating Characteristic - Area Under the Curve.
+
+It measures how well a binary classification model can distinguish between the two classes across all possible thresholds.
+
+### Intuition
+
+- The model outputs a probability score for each sample.
+- We sort these scores from highest to lowest and vary the decision threshold.
+- At each threshold, we compute the true positive rate and false positive rate.
+- The ROC curve plots true positive rate against false positive rate.
+- AUC is the area under that curve.
+
+### Interpretation
+
+- AUC = 1.0: perfect classifier
+- AUC = 0.5: random guessing
+- AUC < 0.5: worse than random
+
+In practice:
+
+- Higher AUC means the model ranks positive cases higher than negative cases more often.
+- It is especially useful when the dataset is imbalanced and accuracy alone may be misleading.
+
+### Simple example
+
+If a model gives higher scores to actual heart disease cases than to healthy cases most of the time, its ROC-AUC will be high, such as 0.85 or 0.90.
+
+This means the model is good at separating the two classes, even if the exact threshold chosen for predictions changes.
+
+### Quick scikit-learn example
+
+```python
+from sklearn.metrics import roc_auc_score
+
+# y_true contains the actual labels (0 or 1)
+# y_prob contains predicted probabilities for class 1
+score = roc_auc_score(y_true, y_prob)
+print("ROC AUC:", score)
+```
+
 ## Suggested next steps
 
 1. Add a `train_eval.py` script to perform a proper `train_test_split`, evaluate metrics and save plots.
