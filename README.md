@@ -142,6 +142,108 @@ print('ROC AUC:', roc_auc_score(y_test, y_prob))
 
 ---
 
+## Metrics at a glance
+
+These diagrams summarize the core ideas behind the evaluation metrics used in this project.
+
+### 1. Confusion matrix intuition
+
+```mermaid
+flowchart LR
+    A[Actual Positive] -->|Predicted Positive| B[True Positive]
+    A -->|Predicted Negative| C[False Negative]
+    D[Actual Negative] -->|Predicted Positive| E[False Positive]
+    D -->|Predicted Negative| F[True Negative]
+```
+
+### 2. Precision vs recall trade-off
+
+```mermaid
+flowchart LR
+    P[Higher threshold<br/>fewer positives] -->|more precise| Q[Precision ↑]
+    P -->|miss more true cases| R[Recall ↓]
+    S[Lower threshold<br/>more positives] -->|more catches| T[Recall ↑]
+    S -->|more false alarms| U[Precision ↓]
+```
+
+### 3. How threshold changes the decision boundary
+
+```mermaid
+flowchart TD
+    A[Probability score] --> B{Compare with threshold}
+    B -->|>= threshold| C[Predict Positive]
+    B -->|< threshold| D[Predict Negative]
+    C --> E[Higher recall, lower precision]
+    D --> F[Higher precision, lower recall]
+```
+
+### 4. Quick metric summary
+
+- Accuracy: overall correctness
+- Precision: how many predicted positives were actually positive
+- Recall: how many actual positives were correctly detected
+- F1-score: balance between precision and recall
+- ROC-AUC: ranking quality across all thresholds
+
+## Accuracy, Precision, Recall and F1-score
+
+For binary classification, these metrics are computed from the confusion matrix:
+
+- True Positive (TP): correctly predicted positive
+- True Negative (TN): correctly predicted negative
+- False Positive (FP): predicted positive but actually negative
+- False Negative (FN): predicted negative but actually positive
+
+### 1. Accuracy
+
+$$
+\text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+$$
+
+It tells us how often the model is correct overall.
+
+### 2. Precision
+
+$$
+\text{Precision} = \frac{TP}{TP + FP}
+$$
+
+It tells us how many of the predicted positives were truly positive.
+
+### 3. Recall
+
+$$
+\text{Recall} = \frac{TP}{TP + FN}
+$$
+
+It tells us how many of the actual positives were correctly identified.
+
+### 4. F1-score
+
+$$
+\text{F1-score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
+$$
+
+It is the harmonic mean of precision and recall, useful when you want a single score that balances both.
+
+### Example
+
+Suppose a model gives the following results:
+
+- TP = 10
+- FP = 2
+- FN = 3
+- TN = 85
+
+Then:
+
+- Accuracy = $(10 + 85) / (10 + 85 + 2 + 3) = 95 / 100 = 0.95$
+- Precision = $10 / (10 + 2) = 10 / 12 = 0.833$
+- Recall = $10 / (10 + 3) = 10 / 13 = 0.769$
+- F1-score = $2 \times (0.833 \times 0.769) / (0.833 + 0.769) \approx 0.80$
+
+So, the model has an accuracy of 95%, precision of 83.3%, recall of 76.9%, and an F1-score of 80%.
+
 ## Suggested next steps
 
 1. Add a `train_eval.py` script to perform a proper `train_test_split`, evaluate metrics and save plots.
