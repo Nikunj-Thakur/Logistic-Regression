@@ -66,11 +66,11 @@ def compute_cost_matrix(X, y, w, b, logistic=False, lambda_=0, safe=True):
                           np.dot((1-y).T, np.log(1-f)))   # (1,m)(m,1) = (1,1)
             # scalar
             cost = cost[0, 0]
-    else:
+    else: 
         # (m,n)(n,1) = (m,1)
         f = X @ w + b
         # scalar
-        cost = (1/(2*m)) * np.sum((f - y)**2)
+        cost = (1/(2*m)) * np.sum((f - y)**2) # MSE cost
 
     # scalar
     reg_cost = (lambda_/(2*m)) * np.sum(w**2)

@@ -10,7 +10,7 @@ y = np.array([0,  0, 0, 1, 1, 1, 0, 0, 1, 1])
 
 m = len(x)
 
-b = 10
+
 
 # ---------------------------------------------------
 # Cost function
@@ -23,14 +23,15 @@ def compute_cost(w, b):
     cost = (1 / (2 * m)) * np.sum((predictions - y) ** 2)
     return cost
 
-
-w_array = np.linspace(-10, 10, 500)
+b = 10  # random bias
+w_array = np.linspace(-10, 10, 500)  # random w values
 cost_array = []
 
 for w in w_array:
     cost_array.append(compute_cost(w, b))
 
 print(cost_array)
+print(len(cost_array))
 
 fig = plt.figure(figsize=(10, 4))
 ax1 = fig.add_subplot(1, 1, 1)

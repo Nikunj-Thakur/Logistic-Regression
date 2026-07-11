@@ -31,7 +31,7 @@ plt.tight_layout()
 
 x0 = -b_out/w_out[0]
 x1 = -b_out/w_out[1]
-ax.plot([0,x0],[x1,0])
+ax.plot([0,x0],[x1,0])  # this plots the decision boundary
 plt.show()
 
 fig, (ax1, ax2) = plt.subplots(1, 2, constrained_layout=True, figsize=(12, 4))

@@ -39,8 +39,8 @@ if train_test_split is not None:
         X,
         y,
         test_size=0.2,
-        stratify=y,
-        random_state=40,
+        stratify=y,  # Split the data so that the proportion of each class in y is preserved
+        random_state=42, # fixes the random seed, so the random process produces the same result every time you run the code.
     )
 else:
     # Create a random number generator with a fixed seed so the split is reproducible.

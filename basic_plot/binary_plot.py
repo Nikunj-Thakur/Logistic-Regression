@@ -4,14 +4,21 @@ import matplotlib.pyplot as plt
 def plot_data(X, y, ax, pos_label="y=1", neg_label="y=0", s=80, loc='best' ):
     """ plots logistic data with two axis """
     # Find Indices of Positive and Negative Examples
-    pos = y == 1
-    neg = y == 0
+    pos = y == 1  # Example: pos = [False, False, False, True, True, True]
+    neg = y == 0  # Example: neg = [True, True, True, False, False, False]
     pos = pos.reshape(-1,)  #work with 1D or 1D y vectors
     neg = neg.reshape(-1,)
 
     # Plot examples
-    ax.scatter(X[pos, 0], X[pos, 1], marker='x', s=s, c = 'red', label=pos_label)
+    ax.scatter(X[pos, 0], X[pos, 1], marker='x', s=s, c = 'red', label=pos_label) 
+     # X[pos, 0] : Take rows where pos=True, Take column 0 (x1)
+     # X[pos, 1] : Take rows where pos=True, Take column 1 (x1)
+
+
     ax.scatter(X[neg, 0], X[neg, 1], marker='o', s=s, label=neg_label, facecolors='none', edgecolors='b', lw=3)
+     # X[neg, 0] : Take rows where neg=True, Take column 0 (x1)
+     # X[neg, 1] : Take rows where neg=True, Take column 1 (x1)
+
     ax.legend(loc=loc)
 
 

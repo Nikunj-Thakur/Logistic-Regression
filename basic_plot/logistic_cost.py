@@ -20,7 +20,8 @@ def plt_logistic_cost(X,y):
 
     for i in range(points.shape[0]):
         w,b = points[i]
-        cost[i] = luf.compute_cost_matrix(X.reshape(-1,1), y, w, b, logistic=True, safe=True)
+        cost[i] = luf.compute_cost_matrix(X.reshape(-1,1), y, w, b, logistic=True, safe=True) 
+        # X.reshape(-1,1) because ML code usually expects data in the form: (number of examples, number of features)
     cost = cost.reshape(wx.shape)
 
     fig = plt.figure(figsize=(9,5))
@@ -31,9 +32,9 @@ def plt_logistic_cost(X,y):
     ax.set_ylabel('b', fontsize=16)
     ax.set_zlabel("Cost", rotation=90, fontsize=16)
     ax.set_title('Logistic Cost vs (w, b)')
-    ax.xaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
-    ax.yaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
-    ax.zaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
+    ax.xaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))  #RGBA
+    ax.yaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))  #RGBA
+    ax.zaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))  #RGBA
 
     ax = fig.add_subplot(1, 2, 2, projection='3d')
 

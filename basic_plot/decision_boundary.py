@@ -11,8 +11,8 @@ neg = y == 0
 print(pos)
 print(neg)
 
-x0=np.arange(0,6)
-x1=3-x0
+x0=np.arange(0,6) # x0 = [0, 1, 2, 3, 4, 5]
+x1=3-x0           # x1 = [3, 2, 1, 0, -1, -2]
 
 fig, ax = plt.subplots(1, 1, figsize=(8, 4))
 ax.scatter(X[pos, 0], X[pos, 1], marker='x', color='r',label="y=1")
